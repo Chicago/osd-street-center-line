@@ -14,40 +14,44 @@ R
 Find an example script [here](https://github.com/Chicago/osd-street-center-line/blob/master/examples/Importing%20GeoJSON%20R%20Demo.R, 'Importing GeoJSON data to R'). This example will import the data in R and create a couple of maps.
 
 Instructions:
-1. Install the "rgdal" library to let R read and translate the data from GeoJSON to a Shapefile. We will use "ggplot2" library to transform the spatial data frame to a regular data frame--and to make a map.
+1. Set the working directory to the location of the downloaded repository.
+```r
+setwd("path\\to\\folder")
+```
+2. Install the "rgdal" library to let R read and translate the data from GeoJSON to a Shapefile. We will use "ggplot2" library to transform the spatial data frame to a regular data frame--and to make a map.
     ```r
     install.packages(c("rgdal","ggplot2"))
     ```
-2. Load the libraries:
+3. Load the libraries:
     ```r
     library(rgdal)
-    library(rgdal)
+    library(ggplot2)
     ```
-3. Import data to a spatial dataframe. City data is typically created using the transverse Mercator projection.
+4. Import data to a spatial dataframe. City data is typically created using the transverse Mercator projection.
     ```r
-    ogrInfo("U:\\Open Source Data\\Bike Routes\\Bikeroutes3.json", layer="OGRGeoJSON")
-    bikes.shapefile <- readOGR(dsn="U:\\Open Source Data\\Bike Routes\\Bikeroutes3.json", layer="OGRGeoJSON", p4s="+proj=tmerc +ellps=WGS84")
+    ogrInfo("data\\Transportation.json", layer="OGRGeoJSON")
+    transportation.shapefile <- readOGR(dsn="data\\Transportation.json", layer="OGRGeoJSON", p4s="+proj=tmerc +ellps=WGS84")
     ```
-4. Ensure the map works:
+5. Ensure the map works:
     ```r
     plot(bikes.shapefile)
     ```
-5. Lets convert the spatial dataframe to a typical dataframe.
+6. Lets convert the spatial dataframe to a typical dataframe.
     ```r
-    bikes.table <- fortify(bikes.shapefile)
+    transportation.table <- fortify(transportation.shapefile)
     ```
-6. Review the new dataframe.
+7. Review the new dataframe.
     ```r
-    head(bikes.table)
+    head(transportation.table)
     ```
-7. Plot the data.
+8. Plot the data.
     ```r
-    ggplot(bikes.table, aes(x=long, y=lat, group=group)) + geom_path()
+    ggplot(transportation.table, aes(x=long, y=lat, group=group)) + geom_path()
     ```
 Here is the output you should expect from the plot() command:
-![plot(transportation.shapefile)](https://github.com/Chicago/osd-street-center-line/blob/master/examples/R-plot-street-center-lines.png)
+![plot(transportation.shapefile)](/examples/R-plot-street-center-lines.png)
 Here is the outout you should expect from the ggplot() command:
-![ggplot(transportation.df, aes(x=long, y=lat, group=group))+geom_path()](https://github.com/Chicago/osd-street-center-line/blob/master/examples/R-ggplot-street-center-lines.png)
+![ggplot(transportation.df, aes(x=long, y=lat, group=group))+geom_path()](/examples/R-ggplot-street-center-lines.png)
     
 Python
 ------
@@ -56,19 +60,18 @@ Find an example script [here](https://github.com/Chicago/osd-street-center-line/
 1. Load the necessary json and pprint libraries.
 	```python
 	import json
-	from pprint import pprint
 	```
 2. Open GeoJSON data file.
 	```python
-	transportation_json = open('PATH\TO\osd-street-center-line\data\Transportation.json', 'r')
+	transportation_json = open('PATH/TO/osd-street-center-line/data/Transportation.json', 'r')
 	```
-3. Load GeoJSON file.
+3. Check first few lines of data (repeat this command several times)
+    ```python
+    transportation.readline()
+    ```
+4. Load GeoJSON file.
 	```python
 	transportation = json.load(transportation_json)
-	```
-4. Check first few lines of data (repeat this command several times).
-	```python
-	transportation.readline()
 	```
 5. Close the open GeoJSON file.
 	```python
@@ -82,6 +85,17 @@ Ruby
 Differences between data portal and this repository
 ===================================================
 Though the data in this repository is also available on Chicago's data portal, the data in this repository is different in several ways. First, the data within this repository is released under the MIT License. Second, this data has been edited to remove internal codes which do not provide useful information. Third, after changes were made to the dataset, the original shapefile was converted to GeoJSON using [GDAL's](http://www.gdal.org/, 'Geospatial Data Abstraction Library') [ogr2ogr](http://www.gdal.org/ogr2ogr.html)
+
+The translation from portal to repository involves several steps. First, the original DBF file is transformed using OpenRefine to elminate unhelpful columns and clean data. The "Transformatons" folder contains the corresponding JSON, which contains the detailed list of changes made to the original table.
+
+The resulting shapefile is then translated to GeoJSON using the ogr2ogr from the GDAL application. The transformation is completed in the command prompt:
+```bat
+ogr2ogr -f "GeoJSON" Transortation_ogr.json /path/to/portal/data/Transportation.shp
+```
+Unfortunately, ogr2ogr outputs in machine, but not human-readable files. We use Python's simplejson.tool to transform the data to the final JSON file.
+```bat
+type Transportation_ogr.json | python -m simplejson.tool > Transportation.json
+```
 
 The folder "Transformations" contains the necessary code to transform data on the portal to the release in this repository.
 

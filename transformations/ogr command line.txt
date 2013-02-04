@@ -1,1 +1,0 @@
-ogr2ogr -f "GeoJSON" Transportation.json /path/to/portal/data/Transportation.shp

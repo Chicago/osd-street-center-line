@@ -1,0 +1,4 @@
+REM Translate the Shapefile to a machine-readable JSON
+ogr2ogr -f "GeoJSON" Transportation_ogr.json /path/to/portal/data/Transportation.shp
+REM Make the JSON file human readable.
+type Transportation_ogr.json | python -m simplejson.tool > Transportation.json
