@@ -81,6 +81,14 @@ Find an example script [here](https://github.com/Chicago/osd-street-center-line/
 Ruby
 ----
 
+An example ruby script is provided to show loading GeoJSON and running spatial analysis using the RGeo suite. A simple Gemfile is provided to make getting the dependencies and using them easy.
+
+        $ cd PATH/TO/osd-street-center-line/examples/ruby
+        $ bundle
+        $ ruby example.rb
+
+This example script filters the `Transportation.json` to street segments within a 500ft buffer of 50 W Washington.
+
 
 Differences between data portal and this repository
 ===================================================
