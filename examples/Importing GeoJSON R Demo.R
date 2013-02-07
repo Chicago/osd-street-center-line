@@ -16,9 +16,9 @@ library(rgdal)	# Import data into a Spatial Data Frame in R
 library(ggplot2)	# Transform data from Shapefile to Data Frame
 
 # Import data to Spatial Dataframe	
-ogrInfo("data\\Tranportation.json", layer="OGRGeoJSON") # Checks projection type for readOGR(), number of rows (55747) and fields (44). Replace PATH\\TO with actual file path (e.g., C:\\Users\\username\\downloads)
+ogrInfo("data\\Transportation.json", layer="OGRGeoJSON") # Checks projection type for readOGR(), number of rows (55747) and fields (44). Replace PATH\\TO with actual file path (e.g., C:\\Users\\username\\downloads)
 
-transportation.shapefile <- readOGR(dsn="data\\Tranportation.json", layer="OGRGeoJSON", p4s="+proj=tmerc +ellps=WGS84") # Imports data. Replace PATH\\TO with actual file path (e.g., C:\\Users\\username\\downloads)
+transportation.shapefile <- readOGR(dsn="data\\Transportation.json", layer="OGRGeoJSON", p4s="+proj=tmerc +ellps=WGS84") # Imports data. Replace PATH\\TO with actual file path (e.g., C:\\Users\\username\\downloads)
 
 head(transportation.shapefile) # Inspect the data structure.
 
