@@ -7,10 +7,12 @@ The City of Chicago is releasing selected datasets from the [data portal](http:/
 
 Working with GeoJSON Data
 =========================
+
 The data was released as a [GeoJSON](http://www.geojson.org/geojson-spec.html) file. Below are some simple instructions which will show you how to load GeoJSON in R, Python, and Ruby.
 
 R
 ---
+
 Find an example script [here](/examples/Importing%20GeoJSON%20R%20Demo.R 'Importing GeoJSON data to R'). This example will import the data in R and create a couple of maps.
 
 Instructions:
@@ -66,6 +68,7 @@ Here is the output you should expect from the ggplot() command:
     
 Python
 ------
+
 Find an example script [here](/examples/Importing%20GeoJSON%20Python%20Demo.py 'Importing GeoJSON data to Python Demo').
 
 1. Load the necessary json and pprint libraries.
@@ -98,26 +101,31 @@ Ruby
 
 An example ruby script is provided to show loading GeoJSON and running spatial analysis using the RGeo suite. A simple Gemfile is provided to make getting the dependencies and using them easy.
 
-        $ cd PATH/TO/osd-street-center-line/examples/ruby
-        $ bundle
-        $ ruby example.rb
+```
+$ cd PATH/TO/osd-street-center-line/examples/ruby
+$ bundle
+$ ruby example.rb
+```
 
 This example script filters the `Transportation.json` to street segments within a 500ft buffer of 50 W Washington.
 
-
 Differences between data portal and this repository
 ===================================================
+
 Though the data in this repository is also available on Chicago's data portal, the data in this repository is different in several ways. First, the data within this repository is released under the MIT License. Second, this data has been edited to remove internal codes which do not provide useful information. Third, after changes were made to the dataset, the original shapefile was converted to GeoJSON using [GDAL's](http://www.gdal.org/, 'Geospatial Data Abstraction Library') [ogr2ogr](http://www.gdal.org/ogr2ogr.html)
 
 The translation from portal to repository involves several steps. First, the original DBF file is transformed using OpenRefine to elminate unhelpful columns and clean data. The "Transformatons" folder contains the corresponding JSON, which contains the detailed list of changes made to the original table.
 
 The resulting shapefile is then translated to GeoJSON using the ogr2ogr from the GDAL application. The transformation is completed in the command prompt:
-```bat
-ogr2ogr -f "GeoJSON" Transortation_ogr.json /path/to/portal/data/Transportation.shp
+
 ```
+$ ogr2ogr -f "GeoJSON" Transortation_ogr.json /path/to/portal/data/Transportation.shp
+```
+
 Unfortunately, ogr2ogr outputs in machine, but not human-readable files. We use Python's simplejson.tool to transform the data to the final JSON file.
-```bat
-type Transportation_ogr.json | python -m simplejson.tool > Transportation.json
+
+```
+$ type Transportation_ogr.json | python -m simplejson.tool > Transportation.json
 ```
 
 The folder "Transformations" contains the necessary code to transform data on the portal to the release in this repository.
